@@ -9,3 +9,4 @@ Next steps will be implementing Alpha-Beta Pruning, a Depth-Limiter, and a rando
 
 # How To Play
 Run pip3 install -r requirements.txt to install pygame. Then type python runner.py into your terminal to play.
+
