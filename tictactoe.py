@@ -118,11 +118,12 @@ def terminal(board):
     elif (winner(board) == O):
         return True
 
-    # for i in range(3):
-    #     for j in range(3):
-    #         if  board[i][j] == None:
-    #             return False
-    # return True
+    # check draw
+    for i in range(3):
+        for j in range(3):
+            if board[i][j] == None:
+                return False
+    return True
 
 
 def utility(board):
@@ -141,3 +142,87 @@ def minimax(board):
     """
     Returns the optimal action for the current player on the board.
     """
+    if terminal(board):
+        return None
+    Max = float("-inf")
+    Min = float("inf")
+
+    if player(board) == X:
+        return Max_Value(board, Max, Min)[1]
+    else:
+        return Min_Value(board, Max, Min)[1]
+
+
+def Max_Value(board, Max, Min):
+    move = None
+    if terminal(board):
+        return [utility(board), None]
+    v = float('-inf')
+    for action in actions(board):
+        test = Min_Value(result(board, action), Max, Min)[0]
+        Max = max(Max, test)
+        if test > v:
+            v = test
+            move = action
+        if Max >= Min:
+            break
+    return [v, move]
+
+
+def Min_Value(board, Max, Min):
+    move = None
+    if terminal(board):
+        return [utility(board), None]
+    v = float('inf')
+    for action in actions(board):
+        test = Max_Value(result(board, action), Max, Min)[0]
+        Min = min(Min, test)
+        if test < v:
+            v = test
+            move = action
+        if Max >= Min:
+            break
+    return [v, move]
+#     if terminal(board):
+#         return None
+
+#     Max = float("-inf")
+#     Min = float("inf")
+
+#     if player(board) == X:
+#         return Max_Value(board, Max, Min)[1]
+#     else:
+#         return Min_Value(board, Max, Min)[1]
+
+
+# def Max_Value(board):
+#     if terminal(board):
+#         return utility(board), None
+
+#     v = float('-inf')
+#     move = None
+#     for action in actions(board):
+#         test = Min_Value(result(board, action), Max, Min)[0]
+#         Max = max(Max, test)
+#         if test > v:
+#             v = test
+#             move = action
+#         if Max >= Min:
+#             break
+#     return [v, move]
+
+
+# def Min_Value(board, Max, Min):
+#     move = None
+#     if terminal(board):
+#         return [utility(board), None]
+#     v = float('inf')
+#     for action in actions(board):
+#         test = Max_Value(result(board, action), Max, Min)[0]
+#         Min = min(Min, test)
+#         if test < v:
+#             v = test
+#             move = action
+#         if Max >= Min:
+#             break
+#     return [v, move]
