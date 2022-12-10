@@ -14,7 +14,7 @@ def initial_state():
     """
     Returns starting state of the board.
     """
-    # model board as a 2D array
+    # model board as a matrix
     return [[EMPTY, EMPTY, EMPTY],
             [EMPTY, EMPTY, EMPTY],
             [EMPTY, EMPTY, EMPTY]]
@@ -58,9 +58,9 @@ def result(board, action):
     """
     Returns the board that results from making move (i, j) on the board.
     """
-    # check if legal action
-    if action not in actions(board):
-        raise Exception("Invalid Move!")
+    # # check if legal action
+    # if action not in actions(board):
+    #     raise Exception("Invalid Move!")
 
     # Create new board, without modifying the original board received as input
     result = copy.deepcopy(board)
@@ -138,48 +138,61 @@ def utility(board):
         return 0
 
 
-def minimax(board):
+def minimax(board, maximizingPlayer):
     """
     Returns the optimal action for the current player on the board.
     """
     if terminal(board):
-        return None
-    Max = float("-inf")
-    Min = float("inf")
+        return utility(board), None
 
     if player(board) == X:
-        return Max_Value(board, Max, Min)[1]
+        maximizingPlayer = True
+        maxScore = -100
+        for action in actions(board):
+            score = minimax(result(board, action), False)
+            maxScore = max(maxScore, score)
+            optimalAction = action
+
+        return maxScore, optimalAction
     else:
-        return Min_Value(board, Max, Min)[1]
+        maximizingPlayer = False
+        minScore = 100
+        for action in actions(board):
+            score = minimax(result(board, action), True)
+            minScore = min(minScore, score)
+            optimalAction = action
+
+        return minScore, optimalAction
 
 
-def Max_Value(board, Max, Min):
-    move = None
-    if terminal(board):
-        return [utility(board), None]
-    v = float('-inf')
-    for action in actions(board):
-        test = Min_Value(result(board, action), Max, Min)[0]
-        Max = max(Max, test)
-        if test > v:
-            v = test
-            move = action
-        if Max >= Min:
-            break
-    return [v, move]
+# def Max_Value(board, Max, Min):
+#     optimalMove = None
+#     if terminal(board):
+#         return [utility(board), None]
+#     bestScore = float('-inf')
+#     for action in actions(board):
+#         score = Min_Value(result(board, action), Max, Min)[0]
+#         Max = max(Max, score)
+#         # compare score to test
+#         if score > bestScore:
+#             bestScore = score
+#             optimalMove = action
+#         if Max >= Min:
+#             break
+#     return [bestScore, optimalMove]
 
 
-def Min_Value(board, Max, Min):
-    move = None
-    if terminal(board):
-        return [utility(board), None]
-    v = float('inf')
-    for action in actions(board):
-        test = Max_Value(result(board, action), Max, Min)[0]
-        Min = min(Min, test)
-        if test < v:
-            v = test
-            move = action
-        if Max >= Min:
-            break
-    return [v, move]
+# def Min_Value(board, Max, Min):
+#     move = None
+#     if terminal(board):
+#         return [utility(board), None]
+#     v = float('inf')
+#     for action in actions(board):
+#         test = Max_Value(result(board, action), Max, Min)[0]
+#         Min = min(Min, test)
+#         if test < v:
+#             v = test
+#             move = action
+#         if Max >= Min:
+#             break
+#     return [v, move]
