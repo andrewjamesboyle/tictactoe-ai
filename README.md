@@ -1,5 +1,5 @@
 # TicTacToe-AI
-This is an implementation of the Minimax algorithm, used to create a Tic-Tac-Toe AI.
+Based on the CS50 AI project, this is an implementation of the Minimax algorithm, used to create a Tic-Tac-Toe AI.
 
 # About Minimax
 Minimax is an adversarial search algorithm used to find the most optimal move at any point in the game. The algorithm evaluates the utility of a move, and returns the optimal move by recursively calling itself until it reaches all possible terminal states of the game.
